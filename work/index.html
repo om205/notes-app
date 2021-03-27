@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/8.3.1/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/8.3.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-database.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-functions.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-analytics.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-remote-config.js"></script>
+    <script defer src="/__/firebase/8.3.1/firebase-performance.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="makeUp.css">
+
+    
+  </head>
+  <body>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+    <div id="preLoginPage" style="background:darkcyan;display: block;">
+    <div  class="centerDiv my-5" style="background-color:red">
+      <p style="font-size:xx-large;"> Welcome user</p>
+      <p>Login to continue further</p> 
+      <br>
+      <button class="btn btn-primary" onclick="takePreLoginToSignIn()">Sign in</button>
+      <button class="btn btn-primary" onclick="takePreLoginToSignUp()">Sign Up</button>
+      
+    </div>
+  </div>
+
+
+
+
+     <div id="loginPage" style="display: none;">
+         
+    <form class="forms" >
+        
+      <div class="mx-auto fs-1" style="width: 200px; color: crimson;">
+        <u><b><i> Sign-in</i></b></u>
+      </div>
+      
+      
+        <div class="container mx-5">
+          <label for="uname"><b>Email</b></label>
+          <input type="text" placeholder="Enter Email" id="email" name="uname" required>
+      
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" id="password" name="psw" required>
+      
+          <button class="buttons" onclick="loginEmail()" type="submit">Login</button>
+          <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+          </label>
+          <span class="psw"> <a href="#">Forgot password?</a></span>
+        </div>
+        
+      
+        
+          
+      
+      </form>
+      <div class="centerDivNoBorder" >
+        <p style="font-weight:600; color: crimson; ">You can also Sign-in with your google account by clicking on the link below:</p>
+        <button class="btn btn-primary " onclick="googleLogin()" style="margin-left: 75px;">
+          Login with google
+        </button>
+      </div>
+    </div> 
+
+
+
+     <div id="signUpPage" style="display: none;">
+      <form class="forms">
+        
+        <div class="mx-auto fs-1" style="width: 200px;">
+          <b> Sign-Up</b>
+        </div>
+        
+        
+          <div class="container mx-5">
+            <label for="emailId"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" id="newEmail" name="uname" required>
+        
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" id="newPassword"  required>
+        
+            <button class="buttons" type="submit" onclick="signUp()">Sign-up</button>
+            
+          </div> 
+        
+          
+            
+          </div>
+        </form>
+    </div>
+
+
+
+     <div id="homePage" style="display: none;">
+
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Notes-app</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search by note content" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search notes</button>
+            </form>
+        </div>
+    </nav>
+    <hr>
+    <div class="jumbotron text-center my-2 border-dark">
+        <div class="containor-fluid">
+            <h1>
+                WELCOME TO Notes-app!
+            </h1>
+            <P>
+                Here you can strore and manage your notes.
+            </P>
+        </div>
+    </div>
+    <hr>
+    <div class="containor mx-5">
+        <h1> Your Notes
+        </h1>
+        <button type="button" onclick="takeNote()" class="button btn btn-outline-success">Add Note</a>
+        
+    </div>
+    <div class="container my-5 mx-2" id="noteSpace">
+        
+    </div>
+
+    
+
+
+    
+    </div>
+
+
+
+
+    <div id="noteTakingPage" style="display: none;">
+      <nav class="navbar navbar-light" style="background-color:#00ff9d">
+        <div class="container-fluid text-center">
+          <a class="navbar-brand" href="#">
+              <h1>
+          <b> Edit your note here</b> </h1> 
+          </a>
+        </div>
+      </nav>
+    <div class="containor my-3 mx-5">
+        <div class="input-group input-group-lg" >
+            <span class="input-group-text" id="inputGroup-sizing-lg" > <b> Title</b></span>
+            <input type="text" id="TitleOfNote" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Click to add title">
+          </div>
+    </div>
+      
+    
+      <div class="containor my-3 mx-5">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Write note</h5>
+              <div class="input-group">
+                <!--<span class="input-group-text">Write Note</span>-->
+                <textarea id="NoteText" rows="8" cols="10" class="form-control" aria-label="With textarea" placeholder="Start typing your notes here"></textarea>
+              </div>
+              <button type="button" onclick="saveNote()" class="btn btn-primary">Save</a>
+            </div>
+            <button onclick="takeNoteToHome()">Discard and return to home</button>
+          </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+
+    <!-- firebase -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        
+        
+        
+        
+        
+        // imported firebase commands
+        
+        
+        // var firebaseConfig = {
+        //     apiKey: "AIzaSyBvzAirkTCeqnsr-5wulIkBq9JB8WiYGVM",
+        //     authDomain: "notes-app-b6d33.firebaseapp.com",
+        //     projectId: "notes-app-b6d33",
+        //     storageBucket: "notes-app-b6d33.appspot.com",
+        //     messagingSenderId: "909957840854",
+        //     appId: "1:909957840854:web:ba077ec048bff459762e77",
+        //     measurementId: "G-8S15PFS07Z"
+        // };
+        // // Initialize Firebase
+        // firebase.initializeApp(firebaseConfig);
+        // firebase.analytics();
+
+
+
+
+
+
+    </script>
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  </body>
+</html>
