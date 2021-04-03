@@ -53,9 +53,18 @@ span.psw {
       button:hover {
         opacity: 0.8;
       }
-      
-      
+
       
       .container {
         padding: 16px;
       }
+
+
+      .btnIcon { 
+        border: none;
+        padding: 5px;
+        margin: 4px 2px;
+        border-radius: 90%; 
+      
+      } 
+      
