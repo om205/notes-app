@@ -136,13 +136,22 @@
           <button class="btnIcon" type="button"> <img
               src="https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png" alt="image not found"
               style="height: 50px;width: 50px;" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
-          <input class="form-control me-2" type="search" placeholder="Search by note content" aria-label="Search">  
-          <button class="btn btn-primary" type="submit" style="margin-left: 10px;">Search notes</button>  
+          <input class="form-control me-2" id="searchText" type="search" placeholder="Search Notes" aria-label="Search">  
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="height: 70px;">
+              Search 
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><button class="dropdown-item" id="option1">Search Title</button></li>
+              <li><button class="dropdown-item" id="option2">Search Note content</button></li>
+              <li><button class="dropdown-item" id="option3">Important Notes</button></li>
+            </ul>
+          </div>  
           <button class="btn btn-danger loginState" style="display: none;margin-left: 10px;" type="button"
             id="logoutButton">Logout</button>  
-          <button class="btn btn-success logoutState" style="display: none;margin-left: 10px;" type="button" onclick="toSignIn()"
+          <button class="btn btn-success logoutState" style="display: block;margin-left: 10px;" type="button" onclick="toSignIn()"
             id="loginButton">Login</button>  
-          <button class="btn btn-success logoutState" style="display: none;margin-left: 10px;" type="button" onclick="toSignUp()"
+          <button class="btn btn-success logoutState" style="display: block;margin-left: 10px;" type="button" onclick="toSignUp()"
             id="signupButton">Sign Up</button> 
         </form>
       </div>
@@ -184,7 +193,7 @@
       <button type="button" onclick="toNoteTakingPage()" class="button btn btn-success">Add Note</a>
 
     </div>
-    <div class="container my-5 mx-2 loginState" style="display: none;" id="noteSpace">
+    <div class="row container-fluid my-5 mx-2 loginState" style="display: none;" id="noteSpace">
       
     </div>
 
@@ -194,7 +203,7 @@
     </div>
 <br><br><br><br><br><br><br><br>
     <hr>
-    <div class="containor" style="text-align: center;"> <p style="text-align: center;font-family: 'garamond';font-size: small;"> This website is managed and hosted by Om Dubey <br>IIT (ISM) Dhanbad <br>date published: 03-04-2021 </p> </div>
+    <div class="containor" style="text-align: center;"> <p style="text-align: center;font-family: 'garamond';font-size: small;"> This website is managed and hosted by Om Dubey <br>IIT (ISM) Dhanbad <br>date published: 03-04-2021 <br>current version: 05-04-2021 </p> </div>
 
 
   </div>
@@ -204,19 +213,21 @@
 
 
   <div id="noteTakingPage" style="display: none;">
-    <nav class="navbar navbar-light" style="background-color:#00ff9d">
+    <nav class="navbar navbar-light" style="background-color:lightyellow;"> 
       <div class="container-fluid text-center">
-        <a class="navbar-brand" href="#">
+        
           <h1>
             <b> Edit your note here</b>
           </h1>
-        </a>
+          
+        
       </div>
-    </nav>
+    </nav> 
     <div class="containor my-3 mx-5">
       <div class="input-group input-group-lg">
+
         <span class="input-group-text" id="inputGroup-sizing-lg"> <b> Title</b></span>
-        <input type="text" id="TitleOfNote" class="form-control" aria-label="Sizing example input"
+        <input type="text" value="" id="TitleOfNote" class="form-control" aria-label="Sizing example input"
           aria-describedby="inputGroup-sizing-lg" placeholder="Click to add title">
       </div>
     </div>
@@ -228,10 +239,12 @@
           <h5 class="card-title">Write note</h5>
           <div class="input-group">
             <!--<span class="input-group-text">Write Note</span>-->
-            <textarea id="NoteText" rows="8" cols="10" class="form-control" aria-label="With textarea"
+            <textarea id="NoteText"  rows="8" cols="10" class="form-control" aria-label="With textarea"
               placeholder="Start typing your notes here"></textarea>
           </div>
-          <button type="button" onclick="saveNote()" class="btn btn-primary">Save</a>
+          <button id="SaveBtn" type="button" onclick="saveNote()" class="btn btn-primary">Save</button>
+          <button id="UpdateBtn" type="button"  class="btn btn-primary" style="display: none;">update</button> <br><br>
+          <button  type="button" onclick="discard()" class="btn btn-warning">Discard</button>
         </div>
 
       </div>
