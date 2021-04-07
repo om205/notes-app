@@ -53,18 +53,19 @@ const setupNotes = (data) => {
         for (let index = 0; index < data.note.length; index++) {
             const note = data;
             html += `
-            <div class="card" style="width: 18rem;border-radius:10%;border-color:black;border-width:2px;background-color:lightyellow;margin-bottom:10px">
+            <div class="card notes " id='q${index}' ">
+            <div class="card-header"><h2 class="card-title">${note.title[index]}</h2></div>
             <div class="card-body">
-            <h2 class="card-title">${note.title[index]}</h2>
+            
             <p class="card-text">${note.note[index]}</p>
             <div>
             <br>
             <div class="blockquote-footer" >
             ${note.time[index]}
              </div>
-             <button id="x${index}" type="button" onclick="editNote(this.id)" class="btn btn-outline-secondary">Edit note</button>
+             <button id="x${index}" type="button" onclick="editNote(this.id)" class="btn btn-outline-secondary" style="border-radius:20px">Edit note</button>
 
-             <button id="${index}" type="button" onclick="deleteNote(this.id)" class="btn btn-outline-danger">Remove note</button>
+             <button id="${index}" type="button" onclick="deleteNote(this.id)" class="btn btn-outline-danger" style="border-radius:20px">Remove note</button>
              
              </div>
              <div style="text-align:right">
@@ -72,9 +73,10 @@ const setupNotes = (data) => {
                 
             <input class="important"  type="checkbox" id="y${index}" onclick="markImp(this.id)" name="rating" > mark as important</span></div>
             </div>
-            </div> 
+            </div>
             `;
         }
+        showColor();
         let notesElem = document.getElementById('noteSpace');
         if (data.note.length != 0) {
             notesElem.innerHTML = html;
@@ -119,9 +121,11 @@ function markImp(s) {
 
 // function to save note
 function saveNote() {
+    document.getElementById('saving').style.display = 'block';
     const user = firebase.auth().currentUser;
     let noteTitle = document.getElementById("TitleOfNote");
     let note = document.getElementById("NoteText");
+    let c = document.getElementById('col');
     // fetching time from date object
     let t = new Date();
     let d = JSON.stringify(t.getDate());
@@ -141,11 +145,13 @@ function saveNote() {
         titlesObj = doc.data().title;
         timeObj = doc.data().time;
         starObj = doc.data().star;
+        colorObj = doc.data().color;
 
         notesObj.push(note.value);
         titlesObj.push(noteTitle.value);
         timeObj.push(time);
         starObj.push(false);
+        colorObj.push(c.style.backgroundColor);
 
 
         db.collection('users').doc(user.uid).update({
@@ -153,12 +159,15 @@ function saveNote() {
             note: notesObj,
             title: titlesObj,
             time: timeObj,
-            star: starObj
+            star: starObj,
+            color: colorObj
         })
             .then(() => {
                 // removing text from input fields
                 note.value = '';
                 noteTitle.value = '';
+                c.style.backgroundColor = 'white';
+                document.getElementById('saving').style.display = 'none';
                 toHome();
             }).catch(err => {
                 window.alert(err.message);
@@ -174,19 +183,22 @@ function deleteNote(index) {
         titlesObj = doc.data().title;
         timeObj = doc.data().time;
         starObj = doc.data().star;
+        colorObj = doc.data().color;
 
         // using splice we remove one element at given index
         notesObj.splice(index, 1);
         titlesObj.splice(index, 1);
         timeObj.splice(index, 1);
         starObj.splice(index, 1);
+        colorObj.splice(index, 1);
 
 
         db.collection('users').doc(user.uid).update({
             note: notesObj,
             title: titlesObj,
             time: timeObj,
-            star: starObj
+            star: starObj,
+            color: colorObj
         })
 
     });
@@ -202,6 +214,7 @@ function editNote(s) {
     // getting different elements from DOM
     let title = document.getElementById('TitleOfNote');
     let note = document.getElementById('NoteText');
+    let c = document.getElementById('col');
     let updateBtn = document.getElementById('UpdateBtn');
     let saveBtn = document.getElementById('SaveBtn');
     db.collection('users').doc(user.uid).get().then(doc => {
@@ -210,6 +223,7 @@ function editNote(s) {
         titlesObj = doc.data().title;
         timeObj = doc.data().time;
         starObj = doc.data().star;
+        colorObj = doc.data().color;
         toNoteTakingPage();
         // changing layout of Note taking page
         updateBtn.style.display = 'block';
@@ -217,6 +231,7 @@ function editNote(s) {
         // prefilling the value of previously saved note 
         title.value = titlesObj[index];
         note.value = notesObj[index];
+        c.style.backgroundColor = colorObj[index];
         // listen for update button click and then update the note in the firestore
         updateBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -224,16 +239,19 @@ function editNote(s) {
             updateBtn.style.display = 'none';
             notesObj[index] = note.value;
             titlesObj[index] = title.value;
+            colorObj[index] = c.style.backgroundColor;
 
             db.collection('users').doc(user.uid).update({
                 note: notesObj,
                 title: titlesObj,
                 time: timeObj,
-                star: starObj
+                star: starObj,
+                color: colorObj
             })
                 .then(() => {
                     note.value = '';
                     title.value = '';
+                    c.style.backgroundColor = 'white';
 
                     saveBtn.style.display = 'block';
                     toHome();
@@ -274,15 +292,15 @@ auth.onAuthStateChanged(user => {
 
 // Below function is a feature to be implemented in further updates of app:
 
-        //          function googleLogin() {
-        //              const provider = new firebase.auth.GoogleAuthProvider();
-        //                 auth.signInWithPopup(provider)
-        //                     .then(result => {
-        //             const user = result.user;
-        //                         console.log(user);
-        //                         toSignIn();
-        //                  })
-        //           }
+//          function googleLogin() {
+//              const provider = new firebase.auth.GoogleAuthProvider();
+//                 auth.signInWithPopup(provider)
+//                     .then(result => {
+//             const user = result.user;
+//                         console.log(user);
+//                         toSignIn();
+//                  })
+//           }
 
 
 
@@ -290,6 +308,8 @@ auth.onAuthStateChanged(user => {
 const signUpForm = document.querySelector('#signUp-Form');
 signUpForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    document.getElementById('signing').style.display = 'block';
+    document.getElementById('sign').style.display = 'none';
     const email = signUpForm['newEmail'].value;
     const password = signUpForm['newPassword'].value;
     // function to create new account
@@ -300,11 +320,14 @@ signUpForm.addEventListener('submit', (e) => {
             note: [],
             title: [],
             time: [],
-            star: []
+            star: [],
+            color: []
         }).then(() => {
             signUpForm['newEmail'].value = '';
             signUpForm['newPassword'].value = '';
             signUpForm['username'].value = '';
+            document.getElementById('signing').style.display = 'none';
+            document.getElementById('sign').style.display = 'block';
             auth.signOut().then(() => {
                 toSignIn();
             });
@@ -337,12 +360,17 @@ logout.addEventListener('click', (e) => {
 const loginForm = document.querySelector('#loginForm');
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    document.getElementById('logging').style.display = 'block';
+    document.getElementById('loginEmail').style.display = 'none';
     const email = loginForm['email'].value;
     const password = loginForm['password'].value;
     auth.signInWithEmailAndPassword(email, password)
         .then(cred => {
             loginForm['email'].value = '';
             loginForm['password'].value = '';
+            document.getElementById('logging').style.display = 'none';
+            document.getElementById('loginEmail').style.display = 'block';
+
             toHome();
         }).catch((error) => {
             let errorCode = error.code;
@@ -399,8 +427,8 @@ search.addEventListener(`input`, function () {
                 element.style.display = 'none';
             }
         } else {
-            let a=(input==(cardTxt.substring(0,input.length)).toLowerCase());
-            if (cardTxt.includes(input)||a) {
+            let a = (input == (cardTxt.substring(0, input.length)).toLowerCase());
+            if (cardTxt.includes(input) || a) {
                 element.style.display = 'block';
 
             }
@@ -412,6 +440,50 @@ search.addEventListener(`input`, function () {
     })
 })
 
+
+function show(n) {
+    let noteCards = document.getElementsByClassName('notes');
+
+    Array.from(noteCards).forEach(function (element) {
+        if ('red' == n) {
+            if (element.classList.contains("text-white") && element.classList.contains("bg-danger")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        } else if ('yellow' == n) {
+            if (element.classList.contains("text-dark") && element.classList.contains("bg-warning")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        } else if ('blue' == n) {
+            if (element.classList.contains("text-dark") && element.classList.contains("bg-info")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        } else if ('white' == n) {
+            if (element.classList.contains("text-dark") && element.classList.contains("bg-light")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        } else if ('black' == n) {
+            if (element.classList.contains("text-white") && element.classList.contains("bg-dark")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        } else if ('green' == n) {
+            if (element.classList.contains("text-dark") && element.classList.contains("bg-success")) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+    });
+}
 
 
 
@@ -456,4 +528,48 @@ function toNoteTakingPage() {
 }
 
 
+function choose(col) {
+    var colBtn = document.getElementById('col');
+    colBtn.style.backgroundColor = col;
+}
 
+function resetNotes() {
+    let noteCards = document.getElementsByClassName('notes');
+
+    Array.from(noteCards).forEach(function (element) {
+        element.style.display = 'block';
+
+    });
+}
+// var pop=document.querySelectorAll('.notes');
+// pop[p].addEventListener('click',() =>{
+//     window.alert('hi t here om')
+// })
+function showColor() {
+    const user = firebase.auth().currentUser;
+    db.collection('users').doc(user.uid).get().then(doc => {
+        colorObj = doc.data().color;
+        for (i = 0; i < colorObj.length; i++) {
+            let p = document.getElementById('q' + i);
+            let q = colorObj[i];
+            if (q == 'red') {
+                p.className += " text-white bg-danger";
+            }
+            if (q == 'yellow') {
+                p.className += " text-dark bg-warning";
+            }
+            if (q == 'green') {
+                p.className += " text-dark bg-success";
+            }
+            if (q == 'blue') {
+                p.className += " text-dark bg-info";
+            }
+            if (q == 'white') {
+                p.className += " text-dark bg-light";
+            }
+            if (q == 'black') {
+                p.className += " text-white bg-dark";
+            }
+        }
+    });
+}

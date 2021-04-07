@@ -1,9 +1,16 @@
+body{
+  /* background-color: blanchedalmond; */
+  /* background-color: #FFFDD0; */
+  /* background-color: #FFFFE0; */
+  background: radial-gradient(#e6e667,#FFFDD0);
+}
 .centerDiv {
     margin: auto;
   width: 50%;
   border: 3px solid green;
   padding: 10px;
 }
+
 
 .centerDivNoBorder {
     margin: auto;
@@ -22,10 +29,10 @@ span.psw {
       padding-top: 500px;
     }
     .forms {
-        border: 3px solid #ffffff;
+        /* border: 3px solid #ffffff; */
         /* padding-left: 20px;
         padding-right: 20px;*/
-        padding-top: 50px; 
+        padding-top: 30px; 
       }
       
       
@@ -35,16 +42,18 @@ span.psw {
         margin: 8px 0;
         display: inline-block;
         border: 1px solid #ccc;
-        box-sizing: border-box;
+        box-sizing:border-box;
       }
       
       
       .buttons {
-        background-color: #4CAF50;
-        color: white;
+        background-color: orange;
+        background-blend-mode: screen;
         padding: 14px 20px;
+        border-radius: 70px;
         margin: 8px 0;
-        border: none;
+        border:black;
+        border-width: thick;
         cursor: pointer;
         width: 100%;
       }
@@ -67,4 +76,81 @@ span.psw {
         border-radius: 90%; 
       
       } 
+      #signUpDiv {
+        width:40%;
+        opacity: 0.8;
+        border-radius: 10px;
+       margin-top: 20px;
+        background-color: rgb(0, 195, 255);
+      }
+      #loginDiv {
+        width:40%;
+        opacity: 0.8;
+        border-radius: 10px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        background-color: rgb(0, 195, 255);
+      }
+      #homeButton {
+        background-color:black;
+      }
+      input {
+        
+        border-radius: 30px;
+      }
+      .mid {
+        margin: auto;
+  width: 60%;
+  
+  padding: 10px;
+      }
+      .resetbtn {
+        border: radius 25px;;
+        font-size: 20;
+        padding-top:10;
+        padding-right:20;
+        padding-bottom:10;
+        padding-left:20;
+        background-color: -o-linear-gradient(rgb(255,0,0),rgb(255,0,0));
+        }
+      @media screen and (min-width: 992px) {
+        .notes {
+          margin-left: 5%;
+        }
+      }
+      
+      .notes{
+        background-size:100%;
+        width: 25rem;
+        border-color:black;
+        border-width:2px;
+        margin-bottom:30px;
+        
+      }
+      
+      .color{
+        border-radius: 100%;
+        margin-left: 20%;
+      }
+      .colbtn {
+        width: 40px;
+        border-radius: 70%;
+      }
+      #noteTakingPage{
+        background-image: url(https://venngage-wordpress.s3.amazonaws.com/uploads/2018/09/Yellow-Desk-Simple-Background-Image.jpg) ;
+        background-repeat: no-repeat ;
+        background-position: center center fixed;
+        background-size: cover;
+      }
+      
+      #homePage {
+        background-image:url(data:image/jpeg;base64,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);
+        background-repeat: repeat-y;
+        background-size: 100%;
+        background-attachment: fixed;
+}
+
+
+     
+      
       
